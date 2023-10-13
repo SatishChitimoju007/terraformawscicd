@@ -41,16 +41,18 @@ pipeline {
 
            steps {
                script {
-                    def plan = readFile 'terraformawscicd/tfplan.txt'
-                    input message: "Do you want to apply the plan?",
-                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+                    def plan = readFile 'terraform/tfplan.txt'
+                    def userInput = input(
+                        message: 'Do you want to apply the plan?',
+                        parameters: [text(defaultValue: plan, description: 'Please review the plan', name: 'Plan')]
+                    )
                }
            }
        }
 
         stage('Apply') {
             steps {
-                sh "pwd; terraform apply -input=false tfplan"
+                bat 'cd /terraform && terraform apply -input=false tfplan'
             }
         }
     }
