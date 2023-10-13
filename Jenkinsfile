@@ -23,7 +23,7 @@ pipeline {
 
     stage('Plan') {
         steps {
-            batch '''
+            bat '''
                 cd terraform
                 terraform init
                 terraform plan -out tfplan
