@@ -21,13 +21,17 @@ pipeline {
                 }
             }
 
-        stage('Plan') {
-            steps {
-                @cd && echo Current Directory: %cd% && cd terraform && terraform init
-                @cd && echo Current Directory: %cd% && cd terraform && terraform plan -out tfplan
-                @cd && echo Current Directory: %cd% && cd terraform && terraform show -no-color tfplan > tfplan.txt
-            }
+    stage('Plan') {
+        steps {
+            batch '''
+                cd terraform
+                terraform init
+                terraform plan -out tfplan
+                terraform show -no-color tfplan > tfplan.txt
+            '''
         }
+    }
+
         stage('Approval') {
            when {
                not {
