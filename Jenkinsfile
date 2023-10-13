@@ -23,9 +23,9 @@ pipeline {
 
         stage('Plan') {
             steps {
-                sh 'pwd; terraform init'
-                sh "pwd; terraform plan -out tfplan"
-                sh 'pwd; terraform show -no-color tfplan > tfplan.txt'
+                @cd && echo Current Directory: %cd% && cd terraform && terraform init
+                @cd && echo Current Directory: %cd% && cd terraform && terraform plan -out tfplan
+                @cd && echo Current Directory: %cd% && cd terraform && terraform show -no-color tfplan > tfplan.txt
             }
         }
         stage('Approval') {
